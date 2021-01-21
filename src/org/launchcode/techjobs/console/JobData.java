@@ -7,9 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -51,7 +49,16 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        return allJobs;
+        ArrayList<HashMap<String, String>> tempAllJobs = new ArrayList<HashMap<String, String>>();
+
+        for(int i = 0; i < allJobs.size(); ++i){
+            for(Map.Entry<String, String> jobs : allJobs.get(i).entrySet()){
+                tempAllJobs.add(allJobs.get(i));
+                tempAllJobs.get(i).put(jobs.getKey(), jobs.getValue());
+            }
+        }
+
+        return tempAllJobs;
     }
 
     /**
@@ -76,11 +83,30 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
 
+        return jobs;
+    }
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value){
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for(int i = 0; i < allJobs.size(); ++i){
+            for(Map.Entry<String, String> row : allJobs.get(i).entrySet()){ //iterate over all columns
+                if(jobs.contains(allJobs.get(i))){ //check for duplicates
+                    continue;
+                }else{
+                    if(row.getValue().toLowerCase().contains(value.toLowerCase())){
+                        jobs.add((allJobs.get(i)));
+                    }
+                }
+            }
+        }
         return jobs;
     }
 
