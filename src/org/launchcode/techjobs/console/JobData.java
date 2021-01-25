@@ -52,9 +52,8 @@ public class JobData {
         ArrayList<HashMap<String, String>> tempAllJobs = new ArrayList<HashMap<String, String>>();
 
         for(int i = 0; i < allJobs.size(); ++i){
-            for(Map.Entry<String, String> jobs : allJobs.get(i).entrySet()){
-                tempAllJobs.add(allJobs.get(i));
-                tempAllJobs.get(i).put(jobs.getKey(), jobs.getValue());
+            for(HashMap<String, String> jobs : allJobs){
+                tempAllJobs.add(jobs);
             }
         }
 
